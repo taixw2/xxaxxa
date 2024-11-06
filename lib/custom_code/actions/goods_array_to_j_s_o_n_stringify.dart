@@ -16,5 +16,7 @@ Future<String> goodsArrayToJSONStringify(
   // Add your function code here!
   final List<Map<String, String>> goodsArray = [];
   goodsArray.add({'id': goodsId, 'number': number.toString()});
-  return jsonEncode(goodsArray);
+  String jsonString = json.encode(goodsArray);
+
+  return jsonString.replaceAll("\"", "\\\"");
 }

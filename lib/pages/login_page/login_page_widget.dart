@@ -29,6 +29,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       if ((FFAppState().TOKEN != '') &&
           (FFAppState().SESSION != '')) {
+        setDarkModeSetting(context, ThemeMode.dark);
         _model.apiResultj2q = await CheckLoginedCall.call(
           token: FFAppState().TOKEN,
           session: FFAppState().SESSION,
@@ -46,6 +47,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
           FFAppState().TOKEN = '88678cac5ffcf32ea81b05f81e0aad6e';
           FFAppState().SESSION = '8s8o1hjgii5g25jd9bgrn1mnt7';
         }
+      } else {
+        setDarkModeSetting(context, ThemeMode.dark);
       }
     });
 
@@ -111,9 +114,10 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                             child: Text(
                               'Simeng.store',
                               style: FlutterFlowTheme.of(context)
-                                  .displayLarge
+                                  .headlineLarge
                                   .override(
                                     fontFamily: 'Roboto',
+                                    fontSize: 48.0,
                                     letterSpacing: 0.0,
                                   ),
                             ),
