@@ -149,7 +149,6 @@ class _InStorePageWidgetState extends State<InStorePageWidget> {
                             onTap: () async {
                               await showModalBottomSheet(
                                 isScrollControlled: true,
-                                backgroundColor: null,
                                 barrierColor: const Color(0x8C000000),
                                 enableDrag: false,
                                 context: context,
@@ -203,8 +202,7 @@ class _InStorePageWidgetState extends State<InStorePageWidget> {
                                     Row(
                                       mainAxisSize: MainAxisSize.max,
                                       children: [
-                                        SelectionArea(
-                                            child: Text(
+                                        Text(
                                           valueOrDefault<String>(
                                             _model.selectedGoods?.name,
                                             '-',
@@ -219,7 +217,7 @@ class _InStorePageWidgetState extends State<InStorePageWidget> {
                                                 fontFamily: 'Roboto',
                                                 letterSpacing: 0.0,
                                               ),
-                                        )),
+                                        ),
                                         Icon(
                                           Icons.arrow_right,
                                           color: FlutterFlowTheme.of(context)
@@ -803,7 +801,7 @@ class _InStorePageWidgetState extends State<InStorePageWidget> {
                             } else {
                               _model.goodsJSON =
                                   await actions.goodsArrayToJSONStringify(
-                                _model.selectedGoods!.goodsId,
+                                _model.selectedGoods!.id,
                                 int.parse(_model.textController.text),
                               );
                               _model.apiResultgsi =
