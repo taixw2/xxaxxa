@@ -51,10 +51,10 @@ class FindLocationPageModel extends FlutterFlowModel<FindLocationPageWidget> {
   String? returnPositionID;
   // Stores action output result for [Custom Action - findPositionIdAction] action in IconButton widget.
   String? returnPlusPositionID;
-  // Stores action output result for [Custom Action - findPositionIdAction] action in Button widget.
-  String? buttonPositionId;
-  // Stores action output result for [Backend Call - API (RelateGoods)] action in Button widget.
-  ApiCallResponse? apiResultgsi;
+  // Stores action output result for [Custom Action - findPositionIdAction] action in IconButton widget.
+  String? positionIdByDelete;
+  // Stores action output result for [Backend Call - API (RelateGoods)] action in IconButton widget.
+  ApiCallResponse? apiResultgsiCopy;
 
   @override
   void initState(BuildContext context) {}

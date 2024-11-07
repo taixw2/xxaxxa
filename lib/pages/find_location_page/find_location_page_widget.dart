@@ -2,7 +2,6 @@ import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
 import '/actions/actions.dart' as action_blocks;
 import '/custom_code/actions/index.dart' as actions;
 import '/custom_code/widgets/index.dart' as custom_widgets;
@@ -110,7 +109,7 @@ class _FindLocationPageWidgetState extends State<FindLocationPageWidget> {
             },
           ),
           title: Text(
-            '查询库位',
+            '库位调整',
             style: FlutterFlowTheme.of(context).headlineMedium.override(
                   fontFamily: 'Roboto',
                   color: Colors.white,
@@ -276,51 +275,57 @@ class _FindLocationPageWidgetState extends State<FindLocationPageWidget> {
                                               ].divide(const SizedBox(height: 8.0)),
                                             ),
                                           ),
-                                          FlutterFlowIconButton(
-                                            borderRadius: 8.0,
-                                            buttonSize: 30.0,
-                                            fillColor:
-                                                FlutterFlowTheme.of(context)
-                                                    .primary,
-                                            icon: Icon(
-                                              Icons.remove_sharp,
-                                              color:
+                                          if (locationDetailListItem
+                                                  .stockNumber !=
+                                              '0')
+                                            FlutterFlowIconButton(
+                                              borderRadius: 8.0,
+                                              buttonSize: 30.0,
+                                              fillColor:
                                                   FlutterFlowTheme.of(context)
-                                                      .info,
-                                              size: 12.0,
-                                            ),
-                                            showLoadingIndicator: true,
-                                            onPressed: () async {
-                                              _model.returnPositionID =
-                                                  await actions
-                                                      .findPositionIdAction(
-                                                _model.positionList.toList(),
-                                                _model.positionIdList.toList(),
-                                                _model.position,
-                                              );
-                                              await action_blocks.goodsRelation(
-                                                context,
-                                                goodsId:
-                                                    locationDetailListItem.id,
-                                                number: int.parse(
-                                                        valueOrDefault<String>(
-                                                      locationDetailListItem
-                                                          .stockNumber,
-                                                      '1',
-                                                    )) -
-                                                    1,
-                                                positionId:
-                                                    _model.returnPositionID,
-                                              );
-                                              await _model.loadLocationDetail(
-                                                context,
-                                                position: _model.position,
-                                              );
-                                              safeSetState(() {});
+                                                      .primary,
+                                              icon: Icon(
+                                                Icons.remove_sharp,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .info,
+                                                size: 12.0,
+                                              ),
+                                              showLoadingIndicator: true,
+                                              onPressed: () async {
+                                                _model.returnPositionID =
+                                                    await actions
+                                                        .findPositionIdAction(
+                                                  _model.positionList.toList(),
+                                                  _model.positionIdList
+                                                      .toList(),
+                                                  _model.position,
+                                                );
+                                                await action_blocks
+                                                    .goodsRelation(
+                                                  context,
+                                                  goodsId:
+                                                      locationDetailListItem.id,
+                                                  number: int.parse(
+                                                          valueOrDefault<
+                                                              String>(
+                                                        locationDetailListItem
+                                                            .stockNumber,
+                                                        '1',
+                                                      )) -
+                                                      1,
+                                                  positionId:
+                                                      _model.returnPositionID,
+                                                );
+                                                await _model.loadLocationDetail(
+                                                  context,
+                                                  position: _model.position,
+                                                );
+                                                safeSetState(() {});
 
-                                              safeSetState(() {});
-                                            },
-                                          ),
+                                                safeSetState(() {});
+                                              },
+                                            ),
                                           FlutterFlowIconButton(
                                             borderColor: Colors.transparent,
                                             borderRadius: 8.0,
@@ -367,6 +372,53 @@ class _FindLocationPageWidgetState extends State<FindLocationPageWidget> {
                                               safeSetState(() {});
                                             },
                                           ),
+                                          if (locationDetailListItem
+                                                  .stockNumber ==
+                                              '0')
+                                            FlutterFlowIconButton(
+                                              borderColor: Colors.transparent,
+                                              borderRadius: 8.0,
+                                              buttonSize: 30.0,
+                                              fillColor:
+                                                  FlutterFlowTheme.of(context)
+                                                      .error,
+                                              icon: Icon(
+                                                Icons.delete_forever,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .info,
+                                                size: 14.0,
+                                              ),
+                                              showLoadingIndicator: true,
+                                              onPressed: () async {
+                                                _model.positionIdByDelete =
+                                                    await actions
+                                                        .findPositionIdAction(
+                                                  _model.positionList.toList(),
+                                                  _model.positionIdList
+                                                      .toList(),
+                                                  _model.position,
+                                                );
+                                                _model.apiResultgsiCopy =
+                                                    await StockAPIGroup
+                                                        .relateGoodsCall
+                                                        .call(
+                                                  goods: '[]',
+                                                  position:
+                                                      _model.positionIdByDelete,
+                                                  token: FFAppState().TOKEN,
+                                                  session: FFAppState().SESSION,
+                                                );
+
+                                                await _model.loadLocationDetail(
+                                                  context,
+                                                  position: _model.position,
+                                                );
+                                                safeSetState(() {});
+
+                                                safeSetState(() {});
+                                              },
+                                            ),
                                         ].divide(const SizedBox(width: 12.0)),
                                       ),
                                     ),
@@ -377,53 +429,6 @@ class _FindLocationPageWidgetState extends State<FindLocationPageWidget> {
                           ),
                         ].divide(const SizedBox(height: 12.0)),
                       ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsetsDirectional.fromSTEB(24.0, 16.0, 24.0, 0.0),
-                  child: FFButtonWidget(
-                    onPressed: () async {
-                      _model.buttonPositionId =
-                          await actions.findPositionIdAction(
-                        _model.positionList.toList(),
-                        _model.positionIdList.toList(),
-                        _model.position,
-                      );
-                      _model.apiResultgsi =
-                          await StockAPIGroup.relateGoodsCall.call(
-                        goods: '[]',
-                        position: _model.buttonPositionId,
-                        token: FFAppState().TOKEN,
-                        session: FFAppState().SESSION,
-                      );
-
-                      await _model.loadLocationDetail(
-                        context,
-                        position: _model.position,
-                      );
-                      safeSetState(() {});
-
-                      safeSetState(() {});
-                    },
-                    text: '清空',
-                    options: FFButtonOptions(
-                      width: MediaQuery.sizeOf(context).width * 1.0,
-                      height: 40.0,
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
-                      iconPadding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                      color: FlutterFlowTheme.of(context).primary,
-                      textStyle:
-                          FlutterFlowTheme.of(context).titleSmall.override(
-                                fontFamily: 'Roboto',
-                                color: Colors.white,
-                                letterSpacing: 0.0,
-                              ),
-                      elevation: 0.0,
-                      borderRadius: BorderRadius.circular(8.0),
                     ),
                   ),
                 ),
