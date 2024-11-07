@@ -289,6 +289,7 @@ class _FindLocationPageWidgetState extends State<FindLocationPageWidget> {
                                                       .info,
                                               size: 12.0,
                                             ),
+                                            showLoadingIndicator: true,
                                             onPressed: () async {
                                               _model.returnPositionID =
                                                   await actions
@@ -334,6 +335,7 @@ class _FindLocationPageWidgetState extends State<FindLocationPageWidget> {
                                                       .info,
                                               size: 12.0,
                                             ),
+                                            showLoadingIndicator: true,
                                             onPressed: () async {
                                               _model.returnPlusPositionID =
                                                   await actions
