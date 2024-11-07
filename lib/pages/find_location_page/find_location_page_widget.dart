@@ -1,19 +1,19 @@
 import '/backend/api_requests/api_calls.dart';
-import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/actions/actions.dart' as action_blocks;
 import '/custom_code/actions/index.dart' as actions;
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
-import 'clear_location_model.dart';
-export 'clear_location_model.dart';
+import 'find_location_page_model.dart';
+export 'find_location_page_model.dart';
 
-class ClearLocationWidget extends StatefulWidget {
-  const ClearLocationWidget({
+class FindLocationPageWidget extends StatefulWidget {
+  const FindLocationPageWidget({
     super.key,
     required this.warehouseId,
   });
@@ -21,18 +21,18 @@ class ClearLocationWidget extends StatefulWidget {
   final String? warehouseId;
 
   @override
-  State<ClearLocationWidget> createState() => _ClearLocationWidgetState();
+  State<FindLocationPageWidget> createState() => _FindLocationPageWidgetState();
 }
 
-class _ClearLocationWidgetState extends State<ClearLocationWidget> {
-  late ClearLocationModel _model;
+class _FindLocationPageWidgetState extends State<FindLocationPageWidget> {
+  late FindLocationPageModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => ClearLocationModel());
+    _model = createModel(context, () => FindLocationPageModel());
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
@@ -191,38 +191,10 @@ class _ClearLocationWidgetState extends State<ClearLocationWidget> {
                                   onSuccess: (res) async {
                                     _model.position = res;
                                     safeSetState(() {});
-                                    _model.curPositionId =
-                                        await actions.findPositionIdAction(
-                                      _model.positionList.toList(),
-                                      _model.positionIdList.toList(),
-                                      res,
+                                    await _model.loadLocationDetail(
+                                      context,
+                                      position: res,
                                     );
-                                    _model.apiResulte6r = await StockAPIGroup
-                                        .getLocationDetailCall
-                                        .call(
-                                      locationId: _model.curPositionId,
-                                      warehouseId: widget.warehouseId,
-                                      token: FFAppState().TOKEN,
-                                      session: FFAppState().SESSION,
-                                    );
-
-                                    if (StockAPIGroup.getLocationDetailCall
-                                            .errno(
-                                          (_model.apiResulte6r?.jsonBody ?? ''),
-                                        ) ==
-                                        1) {
-                                      _model.locationDetails = StockAPIGroup
-                                          .getLocationDetailCall
-                                          .data(
-                                            (_model.apiResulte6r?.jsonBody ??
-                                                ''),
-                                          )!
-                                          .toList()
-                                          .cast<LocationDetailStruct>();
-                                      safeSetState(() {});
-                                    }
-
-                                    safeSetState(() {});
                                   },
                                 ),
                               ),
@@ -255,51 +227,144 @@ class _ClearLocationWidgetState extends State<ClearLocationWidget> {
                                       child: Row(
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
-                                          Column(
-                                            mainAxisSize: MainAxisSize.max,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                locationDetailListItem.name,
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleLarge
-                                                        .override(
-                                                          fontFamily: 'Roboto',
-                                                          letterSpacing: 0.0,
-                                                        ),
-                                              ),
-                                              Row(
-                                                mainAxisSize: MainAxisSize.max,
-                                                children: [
-                                                  Text(
-                                                    '编号：${locationDetailListItem.code}',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .labelSmall
-                                                        .override(
-                                                          fontFamily:
-                                                              'Open Sans',
-                                                          letterSpacing: 0.0,
-                                                        ),
-                                                  ),
-                                                  Text(
-                                                    '库存${locationDetailListItem.stockNumber}',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .labelSmall
-                                                        .override(
-                                                          fontFamily:
-                                                              'Open Sans',
-                                                          letterSpacing: 0.0,
-                                                        ),
-                                                  ),
-                                                ].divide(const SizedBox(width: 12.0)),
-                                              ),
-                                            ].divide(const SizedBox(height: 8.0)),
+                                          FlutterFlowIconButton(
+                                            borderRadius: 8.0,
+                                            buttonSize: 40.0,
+                                            fillColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .primary,
+                                            icon: Icon(
+                                              Icons.remove_sharp,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .info,
+                                              size: 24.0,
+                                            ),
+                                            onPressed: () async {
+                                              _model.returnPositionID =
+                                                  await actions
+                                                      .findPositionIdAction(
+                                                _model.positionList.toList(),
+                                                _model.positionIdList.toList(),
+                                                position,
+                                              );
+                                              await action_blocks.goodsRelation(
+                                                context,
+                                                goodsId:
+                                                    locationDetailListItem.id,
+                                                number: int.parse(
+                                                        valueOrDefault<String>(
+                                                      locationDetailListItem
+                                                          .stockNumber,
+                                                      '1',
+                                                    )) -
+                                                    1,
+                                                positionId:
+                                                    _model.returnPositionID,
+                                              );
+                                              await _model.loadLocationDetail(
+                                                context,
+                                                position: _model.position,
+                                              );
+                                              safeSetState(() {});
+
+                                              safeSetState(() {});
+                                            },
                                           ),
-                                        ],
+                                          Expanded(
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.max,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  locationDetailListItem.name,
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .titleLarge
+                                                      .override(
+                                                        fontFamily: 'Roboto',
+                                                        letterSpacing: 0.0,
+                                                      ),
+                                                ),
+                                                Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  children: [
+                                                    Text(
+                                                      '编号：${locationDetailListItem.code}',
+                                                      style: FlutterFlowTheme
+                                                              .of(context)
+                                                          .labelSmall
+                                                          .override(
+                                                            fontFamily:
+                                                                'Open Sans',
+                                                            letterSpacing: 0.0,
+                                                          ),
+                                                    ),
+                                                    Text(
+                                                      '库存${locationDetailListItem.stockNumber}',
+                                                      style: FlutterFlowTheme
+                                                              .of(context)
+                                                          .labelSmall
+                                                          .override(
+                                                            fontFamily:
+                                                                'Open Sans',
+                                                            letterSpacing: 0.0,
+                                                          ),
+                                                    ),
+                                                  ].divide(
+                                                      const SizedBox(width: 12.0)),
+                                                ),
+                                              ].divide(const SizedBox(height: 8.0)),
+                                            ),
+                                          ),
+                                          FlutterFlowIconButton(
+                                            borderColor: Colors.transparent,
+                                            borderRadius: 8.0,
+                                            buttonSize: 40.0,
+                                            fillColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .primary,
+                                            icon: Icon(
+                                              Icons.add,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .info,
+                                              size: 24.0,
+                                            ),
+                                            onPressed: () async {
+                                              _model.returnPlusPositionID =
+                                                  await actions
+                                                      .findPositionIdAction(
+                                                _model.positionList.toList(),
+                                                _model.positionIdList.toList(),
+                                                position,
+                                              );
+                                              await action_blocks.goodsRelation(
+                                                context,
+                                                goodsId:
+                                                    locationDetailListItem.id,
+                                                number: int.parse(
+                                                        valueOrDefault<String>(
+                                                      locationDetailListItem
+                                                          .stockNumber,
+                                                      '1',
+                                                    )) +
+                                                    1,
+                                                positionId:
+                                                    _model.returnPlusPositionID,
+                                              );
+                                              await _model.loadLocationDetail(
+                                                context,
+                                                position: _model.position,
+                                              );
+                                              safeSetState(() {});
+
+                                              safeSetState(() {});
+                                            },
+                                          ),
+                                        ].divide(const SizedBox(width: 12.0)),
                                       ),
                                     ),
                                   );
@@ -317,35 +382,25 @@ class _ClearLocationWidgetState extends State<ClearLocationWidget> {
                       const EdgeInsetsDirectional.fromSTEB(24.0, 16.0, 24.0, 0.0),
                   child: FFButtonWidget(
                     onPressed: () async {
+                      _model.buttonPositionId =
+                          await actions.findPositionIdAction(
+                        _model.positionList.toList(),
+                        _model.positionIdList.toList(),
+                        _model.position,
+                      );
                       _model.apiResultgsi =
                           await StockAPIGroup.relateGoodsCall.call(
                         goods: '[]',
-                        position: _model.curPositionId,
+                        position: _model.buttonPositionId,
                         token: FFAppState().TOKEN,
                         session: FFAppState().SESSION,
                       );
 
-                      _model.apiResult9hx =
-                          await StockAPIGroup.getLocationDetailCall.call(
-                        locationId: _model.curPositionId,
-                        warehouseId: widget.warehouseId,
-                        token: FFAppState().TOKEN,
-                        session: FFAppState().SESSION,
+                      await _model.loadLocationDetail(
+                        context,
+                        position: _model.position,
                       );
-
-                      if (StockAPIGroup.getLocationDetailCall.errno(
-                            (_model.apiResult9hx?.jsonBody ?? ''),
-                          ) ==
-                          1) {
-                        _model.locationDetails =
-                            StockAPIGroup.getLocationDetailCall
-                                .data(
-                                  (_model.apiResult9hx?.jsonBody ?? ''),
-                                )!
-                                .toList()
-                                .cast<LocationDetailStruct>();
-                        safeSetState(() {});
-                      }
+                      safeSetState(() {});
 
                       safeSetState(() {});
                     },

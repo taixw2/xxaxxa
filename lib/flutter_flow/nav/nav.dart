@@ -113,9 +113,9 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           ),
         ),
         FFRoute(
-          name: 'ClearLocation',
-          path: '/clearLocation',
-          builder: (context, params) => ClearLocationWidget(
+          name: 'FindLocationPage',
+          path: '/findLocationPage',
+          builder: (context, params) => FindLocationPageWidget(
             warehouseId: params.getParam(
               'warehouseId',
               ParamType.String,

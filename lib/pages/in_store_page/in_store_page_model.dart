@@ -43,10 +43,8 @@ class InStorePageModel extends FlutterFlowModel<InStorePageWidget> {
   String? Function(BuildContext, String?)? textControllerValidator;
   // Stores action output result for [Custom Action - findPositionIdAction] action in Button widget.
   String? positionId;
-  // Stores action output result for [Custom Action - goodsArrayToJSONStringify] action in Button widget.
-  String? goodsJSON;
-  // Stores action output result for [Backend Call - API (RelateGoods)] action in Button widget.
-  ApiCallResponse? apiResultgsi;
+  // Stores action output result for [Action Block - goodsRelation] action in Button widget.
+  bool? relationResult;
 
   @override
   void initState(BuildContext context) {}

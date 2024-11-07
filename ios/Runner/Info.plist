@@ -43,7 +43,18 @@
 	<true/>
 
 
-
+	<key>NSCameraUsageDescription</key>
+    <string>尝试打开你的相机</string>
+	<key>INSTALLPACKAGES</key>
+    <string>餐食安装应用</string>
+	<key>DELETEPACKAGES</key>
+    <string>尝试删除应用</string>
+	<key>READEXTERNALSTORAGE</key>
+    <string>1</string>
+	<key>REQUESTINSTALLPACKAGES</key>
+    <string>REQUEST_INSTALL_PACKAGES</string>
+	<key>WRITEEXTERNALSTORAGE</key>
+    <string>WRITE_EXTERNAL_STORAGE</string>
 
 
 	<key>UILaunchStoryboardName</key>

@@ -1,10 +1,12 @@
 import '/backend/api_requests/api_calls.dart';
 import '/backend/schema/structs/index.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import 'clear_location_widget.dart' show ClearLocationWidget;
+import '/custom_code/actions/index.dart' as actions;
+import 'find_location_page_widget.dart' show FindLocationPageWidget;
 import 'package:flutter/material.dart';
 
-class ClearLocationModel extends FlutterFlowModel<ClearLocationWidget> {
+class FindLocationPageModel extends FlutterFlowModel<FindLocationPageWidget> {
   ///  Local state fields for this page.
 
   String? position;
@@ -43,20 +45,66 @@ class ClearLocationModel extends FlutterFlowModel<ClearLocationWidget> {
 
   ///  State fields for stateful widgets in this page.
 
-  // Stores action output result for [Backend Call - API (getLocationList)] action in ClearLocation widget.
+  // Stores action output result for [Backend Call - API (getLocationList)] action in FindLocationPage widget.
   ApiCallResponse? apiResultaac;
-  // Stores action output result for [Custom Action - findPositionIdAction] action in BarcodeScannerWidget widget.
-  String? curPositionId;
-  // Stores action output result for [Backend Call - API (GetLocationDetail)] action in BarcodeScannerWidget widget.
-  ApiCallResponse? apiResulte6r;
+  // Stores action output result for [Custom Action - findPositionIdAction] action in IconButton widget.
+  String? returnPositionID;
+  // Stores action output result for [Custom Action - findPositionIdAction] action in IconButton widget.
+  String? returnPlusPositionID;
+  // Stores action output result for [Custom Action - findPositionIdAction] action in Button widget.
+  String? buttonPositionId;
   // Stores action output result for [Backend Call - API (RelateGoods)] action in Button widget.
   ApiCallResponse? apiResultgsi;
-  // Stores action output result for [Backend Call - API (GetLocationDetail)] action in Button widget.
-  ApiCallResponse? apiResult9hx;
 
   @override
   void initState(BuildContext context) {}
 
   @override
   void dispose() {}
+
+  /// Action blocks.
+  Future loadLocationDetail(
+    BuildContext context, {
+    String? position,
+  }) async {
+    String? returnPositionID;
+    ApiCallResponse? locationDetailResponse;
+
+    returnPositionID = await actions.findPositionIdAction(
+      positionList.toList(),
+      positionIdList.toList(),
+      position,
+    );
+    locationDetailResponse = await StockAPIGroup.getLocationDetailCall.call(
+      locationId: returnPositionID,
+      warehouseId: widget!.warehouseId,
+      token: FFAppState().TOKEN,
+      session: FFAppState().SESSION,
+    );
+
+    if (StockAPIGroup.getLocationDetailCall.errno(
+          (locationDetailResponse.jsonBody ?? ''),
+        ) ==
+        1) {
+      locationDetails = StockAPIGroup.getLocationDetailCall
+          .data(
+            (locationDetailResponse.jsonBody ?? ''),
+          )!
+          .toList()
+          .cast<LocationDetailStruct>();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            '获取异常',
+            style: TextStyle(
+              color: FlutterFlowTheme.of(context).primaryText,
+            ),
+          ),
+          duration: const Duration(milliseconds: 4000),
+          backgroundColor: FlutterFlowTheme.of(context).error,
+        ),
+      );
+    }
+  }
 }

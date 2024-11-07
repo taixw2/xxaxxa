@@ -190,7 +190,7 @@ class _FeaturePageWidgetState extends State<FeaturePageWidget> {
                     highlightColor: Colors.transparent,
                     onTap: () async {
                       context.pushNamed(
-                        'ClearLocation',
+                        'FindLocationPage',
                         queryParameters: {
                           'warehouseId': serializeParam(
                             widget.warehouseId,

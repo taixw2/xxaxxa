@@ -5,6 +5,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/weight/goods_selector/goods_selector_widget.dart';
+import '/actions/actions.dart' as action_blocks;
 import '/custom_code/actions/index.dart' as actions;
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import 'package:flutter/material.dart';
@@ -797,23 +798,15 @@ class _InStorePageWidgetState extends State<InStorePageWidget> {
                                 ),
                               );
                             } else {
-                              _model.goodsJSON =
-                                  await actions.goodsArrayToJSONStringify(
-                                _model.selectedGoods!.id,
-                                int.parse(_model.textController.text),
+                              _model.relationResult =
+                                  await action_blocks.goodsRelation(
+                                context,
+                                goodsId: _model.selectedGoods?.id,
+                                number:
+                                    int.tryParse(_model.textController.text),
+                                positionId: _model.positionId,
                               );
-                              _model.apiResultgsi =
-                                  await StockAPIGroup.relateGoodsCall.call(
-                                goods: _model.goodsJSON,
-                                position: _model.positionId,
-                                token: FFAppState().TOKEN,
-                                session: FFAppState().SESSION,
-                              );
-
-                              if (StockAPIGroup.relateGoodsCall.errno(
-                                    (_model.apiResultgsi?.jsonBody ?? ''),
-                                  ) ==
-                                  1) {
+                              if (_model.relationResult!) {
                                 var confirmDialogResponse =
                                     await showDialog<bool>(
                                           context: context,
