@@ -195,6 +195,7 @@ class _FindLocationPageWidgetState extends State<FindLocationPageWidget> {
                                       context,
                                       position: res,
                                     );
+                                    safeSetState(() {});
                                   },
                                 ),
                               ),
