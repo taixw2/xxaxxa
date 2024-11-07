@@ -1,5 +1,6 @@
 import '/backend/api_requests/api_calls.dart';
 import '/backend/schema/structs/index.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
@@ -66,114 +67,277 @@ class _GoodsSelectorWidgetState extends State<GoodsSelectorWidget> {
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              width: MediaQuery.sizeOf(context).width * 1.0,
-              child: TextFormField(
-                controller: _model.textController,
-                focusNode: _model.textFieldFocusNode,
-                onFieldSubmitted: (_) async {
-                  if (_model.textController.text != '') {
-                    _model.apiResulttu9 =
-                        await StockAPIGroup.searchGoodsCall.call(
-                      keyword: _model.textController.text,
-                      warehouseId: widget.warehouseId,
-                      token: FFAppState().TOKEN,
-                      session: FFAppState().SESSION,
-                    );
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: SizedBox(
+                    width: MediaQuery.sizeOf(context).width * 1.0,
+                    child: TextFormField(
+                      controller: _model.textController,
+                      focusNode: _model.textFieldFocusNode,
+                      onFieldSubmitted: (_) async {
+                        if (_model.textController.text != '') {
+                          _model.apiResulttu9 =
+                              await StockAPIGroup.searchGoodsCall.call(
+                            keyword: _model.textController.text,
+                            warehouseId: widget.warehouseId,
+                            token: FFAppState().TOKEN,
+                            session: FFAppState().SESSION,
+                          );
 
-                    if (StockAPIGroup.searchGoodsCall.errno(
-                          (_model.apiResulttu9?.jsonBody ?? ''),
-                        ) ==
-                        1) {
-                      _model.goodsList = StockAPIGroup.searchGoodsCall
-                          .goods(
-                            (_model.apiResulttu9?.jsonBody ?? ''),
-                          )!
-                          .toList()
-                          .cast<GoodsDTStruct>();
-                      safeSetState(() {});
+                          if (StockAPIGroup.searchGoodsCall.errno(
+                                (_model.apiResulttu9?.jsonBody ?? ''),
+                              ) ==
+                              1) {
+                            _model.goodsList = StockAPIGroup.searchGoodsCall
+                                .goods(
+                                  (_model.apiResulttu9?.jsonBody ?? ''),
+                                )!
+                                .toList()
+                                .cast<GoodsDTStruct>();
+                            safeSetState(() {});
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  '服务器异常，请退出后重新登录',
+                                  style: TextStyle(
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryText,
+                                  ),
+                                ),
+                                duration: const Duration(milliseconds: 3000),
+                                backgroundColor:
+                                    FlutterFlowTheme.of(context).error,
+                              ),
+                            );
+                          }
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                '请输入商品名称',
+                                style: TextStyle(
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryText,
+                                ),
+                              ),
+                              duration: const Duration(milliseconds: 3000),
+                              backgroundColor:
+                                  FlutterFlowTheme.of(context).warning,
+                            ),
+                          );
+                        }
+
+                        safeSetState(() {});
+                      },
+                      autofocus: false,
+                      obscureText: false,
+                      decoration: InputDecoration(
+                        isDense: true,
+                        labelStyle:
+                            FlutterFlowTheme.of(context).labelMedium.override(
+                                  fontFamily: 'Open Sans',
+                                  letterSpacing: 0.0,
+                                ),
+                        hintText: '输入商品名称搜索',
+                        hintStyle:
+                            FlutterFlowTheme.of(context).labelMedium.override(
+                                  fontFamily: 'Open Sans',
+                                  letterSpacing: 0.0,
+                                ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Color(0x00000000),
+                            width: 1.0,
+                          ),
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Color(0x00000000),
+                            width: 1.0,
+                          ),
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).error,
+                            width: 1.0,
+                          ),
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).error,
+                            width: 1.0,
+                          ),
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        filled: true,
+                        fillColor: FlutterFlowTheme.of(context).accent2,
+                      ),
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily: 'Open Sans',
+                            letterSpacing: 0.0,
+                          ),
+                      cursorColor: FlutterFlowTheme.of(context).primaryText,
+                      validator:
+                          _model.textControllerValidator.asValidator(context),
+                    ),
+                  ),
+                ),
+                FlutterFlowIconButton(
+                  borderRadius: 8.0,
+                  buttonSize: 40.0,
+                  fillColor: FlutterFlowTheme.of(context).primary,
+                  icon: Icon(
+                    Icons.search_sharp,
+                    color: FlutterFlowTheme.of(context).info,
+                    size: 24.0,
+                  ),
+                  onPressed: () async {
+                    if (_model.textController.text != '') {
+                      _model.apiResulttu9Copy =
+                          await StockAPIGroup.searchGoodsCall.call(
+                        keyword: _model.textController.text,
+                        warehouseId: widget.warehouseId,
+                        token: FFAppState().TOKEN,
+                        session: FFAppState().SESSION,
+                      );
+
+                      if (StockAPIGroup.searchGoodsCall.errno(
+                            (_model.apiResulttu9Copy?.jsonBody ?? ''),
+                          ) ==
+                          1) {
+                        _model.goodsList = StockAPIGroup.searchGoodsCall
+                            .goods(
+                              (_model.apiResulttu9Copy?.jsonBody ?? ''),
+                            )!
+                            .toList()
+                            .cast<GoodsDTStruct>();
+                        safeSetState(() {});
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              '查询异常',
+                              style: TextStyle(
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                            ),
+                            duration: const Duration(milliseconds: 4000),
+                            backgroundColor: FlutterFlowTheme.of(context).error,
+                          ),
+                        );
+                      }
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
-                            '服务器异常，请退出后重新登录',
+                            '请输入商品名称',
                             style: TextStyle(
                               color: FlutterFlowTheme.of(context).primaryText,
                             ),
                           ),
                           duration: const Duration(milliseconds: 3000),
-                          backgroundColor: FlutterFlowTheme.of(context).error,
+                          backgroundColor: FlutterFlowTheme.of(context).warning,
                         ),
                       );
                     }
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          '请输入商品名称',
-                          style: TextStyle(
-                            color: FlutterFlowTheme.of(context).primaryText,
+
+                    safeSetState(() {});
+                  },
+                ),
+              ].divide(const SizedBox(width: 12.0)),
+            ),
+            Builder(
+              builder: (context) {
+                final recentListData = _model.recentList.toList();
+
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: List.generate(recentListData.length,
+                        (recentListDataIndex) {
+                      final recentListDataItem =
+                          recentListData[recentListDataIndex];
+                      return InkWell(
+                        splashColor: Colors.transparent,
+                        focusColor: Colors.transparent,
+                        hoverColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        onTap: () async {
+                          _model.apiResulttu9Copyqqq =
+                              await StockAPIGroup.searchGoodsCall.call(
+                            keyword: recentListDataItem.name,
+                            warehouseId: widget.warehouseId,
+                            token: FFAppState().TOKEN,
+                            session: FFAppState().SESSION,
+                          );
+
+                          if (StockAPIGroup.searchGoodsCall.errno(
+                                (_model.apiResulttu9Copyqqq?.jsonBody ?? ''),
+                              ) ==
+                              1) {
+                            _model.goodsList = StockAPIGroup.searchGoodsCall
+                                .goods(
+                                  (_model.apiResulttu9Copyqqq?.jsonBody ?? ''),
+                                )!
+                                .toList()
+                                .cast<GoodsDTStruct>();
+                            safeSetState(() {});
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  '查询异常',
+                                  style: TextStyle(
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryText,
+                                  ),
+                                ),
+                                duration: const Duration(milliseconds: 4000),
+                                backgroundColor:
+                                    FlutterFlowTheme.of(context).error,
+                              ),
+                            );
+                          }
+
+                          safeSetState(() {});
+                        },
+                        child: Container(
+                          constraints: const BoxConstraints(
+                            minWidth: 100.0,
+                          ),
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context).accent2,
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                12.0, 8.0, 12.0, 8.0),
+                            child: Text(
+                              recentListDataItem.name,
+                              textAlign: TextAlign.center,
+                              maxLines: 8,
+                              style: FlutterFlowTheme.of(context)
+                                  .bodySmall
+                                  .override(
+                                    fontFamily: 'Open Sans',
+                                    letterSpacing: 0.0,
+                                  ),
+                            ),
                           ),
                         ),
-                        duration: const Duration(milliseconds: 3000),
-                        backgroundColor: FlutterFlowTheme.of(context).warning,
-                      ),
-                    );
-                  }
-
-                  safeSetState(() {});
-                },
-                autofocus: false,
-                obscureText: false,
-                decoration: InputDecoration(
-                  isDense: true,
-                  labelStyle: FlutterFlowTheme.of(context).labelMedium.override(
-                        fontFamily: 'Open Sans',
-                        letterSpacing: 0.0,
-                      ),
-                  hintText: '输入商品名称搜索',
-                  hintStyle: FlutterFlowTheme.of(context).labelMedium.override(
-                        fontFamily: 'Open Sans',
-                        letterSpacing: 0.0,
-                      ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Color(0x00000000),
-                      width: 1.0,
-                    ),
-                    borderRadius: BorderRadius.circular(8.0),
+                      );
+                    }),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Color(0x00000000),
-                      width: 1.0,
-                    ),
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: FlutterFlowTheme.of(context).error,
-                      width: 1.0,
-                    ),
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: FlutterFlowTheme.of(context).error,
-                      width: 1.0,
-                    ),
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  filled: true,
-                  fillColor: FlutterFlowTheme.of(context).accent2,
-                ),
-                style: FlutterFlowTheme.of(context).bodyMedium.override(
-                      fontFamily: 'Open Sans',
-                      letterSpacing: 0.0,
-                    ),
-                cursorColor: FlutterFlowTheme.of(context).primaryText,
-                validator: _model.textControllerValidator.asValidator(context),
-              ),
+                );
+              },
             ),
             if (_model.goodsList.isNotEmpty)
               Expanded(
@@ -202,6 +366,8 @@ class _GoodsSelectorWidgetState extends State<GoodsSelectorWidget> {
                                   await widget.onSelect?.call(
                                     goodsItem,
                                   );
+                                  _model.addToRecentList(GoodsDTStruct());
+                                  safeSetState(() {});
                                   Navigator.pop(context);
                                 },
                                 child: Container(

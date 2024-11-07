@@ -1,3 +1,4 @@
+import '/auth/custom_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -335,10 +336,14 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                             _model.passwordTextController.text;
                                         FFAppState().SESSION = _model
                                             .emailAddressTextController.text;
-                                        if (Navigator.of(context).canPop()) {
-                                          context.pop();
-                                        }
-                                        context.pushNamed('HomePage');
+                                        GoRouter.of(context).prepareAuthEvent();
+                                        await authManager.signIn(
+                                          authenticationToken: _model
+                                              .passwordTextController.text,
+                                        );
+
+                                        context.goNamedAuth(
+                                            'HomePage', context.mounted);
                                       } else {
                                         await showDialog(
                                           context: context,
@@ -392,6 +397,14 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                               ],
                             ),
                           ),
+                        ),
+                        Text(
+                          'v1.0.0',
+                          style:
+                              FlutterFlowTheme.of(context).labelSmall.override(
+                                    fontFamily: 'Open Sans',
+                                    letterSpacing: 0.0,
+                                  ),
                         ),
                       ],
                     ),

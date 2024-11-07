@@ -76,7 +76,7 @@ class _InStorePageWidgetState extends State<InStorePageWidget> {
       }
     });
 
-    _model.textController ??= TextEditingController(text: '0');
+    _model.textController ??= TextEditingController(text: '1');
     _model.textFieldFocusNode ??= FocusNode();
   }
 
@@ -159,9 +159,7 @@ class _InStorePageWidgetState extends State<InStorePageWidget> {
                                     child: Padding(
                                       padding: MediaQuery.viewInsetsOf(context),
                                       child: SizedBox(
-                                        height:
-                                            MediaQuery.sizeOf(context).height *
-                                                0.6,
+                                        height: 350.0,
                                         child: GoodsSelectorWidget(
                                           warehouseId: widget.warehouseId!,
                                           onSelect: (goods) async {
@@ -355,7 +353,7 @@ class _InStorePageWidgetState extends State<InStorePageWidget> {
                                           },
                                         ),
                                         SizedBox(
-                                          width: 80.0,
+                                          width: 40.0,
                                           child: TextFormField(
                                             controller: _model.textController,
                                             focusNode:
@@ -845,7 +843,7 @@ class _InStorePageWidgetState extends State<InStorePageWidget> {
                                         false;
                                 if (confirmDialogResponse) {
                                   safeSetState(() {
-                                    _model.textController?.text = '0';
+                                    _model.textController?.text = '1';
                                   });
                                   _model.selectedGoods = null;
                                   safeSetState(() {});

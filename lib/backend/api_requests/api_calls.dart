@@ -25,6 +25,7 @@ class StockAPIGroup {
   static GetLocationListCall getLocationListCall = GetLocationListCall();
   static SearchGoodsCall searchGoodsCall = SearchGoodsCall();
   static RelateGoodsCall relateGoodsCall = RelateGoodsCall();
+  static GetLocationDetailCall getLocationDetailCall = GetLocationDetailCall();
 }
 
 class GetWarehouseListCall {
@@ -214,6 +215,54 @@ class RelateGoodsCall {
         response,
         r'''$.errno''',
       ));
+}
+
+class GetLocationDetailCall {
+  Future<ApiCallResponse> call({
+    String? locationId = '',
+    String? warehouseId = '',
+    String? token = '88678cac5ffcf32ea81b05f81e0aad6e',
+    String? session = 'or2vm320oojg2ni6cg80u17s56',
+  }) async {
+    final baseUrl = StockAPIGroup.getBaseUrl(
+      token: token,
+      session: session,
+    );
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'GetLocationDetail',
+      apiUrl: '$baseUrl/location/apiDetail/',
+      callType: ApiCallType.GET,
+      headers: {
+        'Cookie': 'token=$token; PHPSESSID=$session',
+      },
+      params: {
+        'id': locationId,
+        'warehouse_id': warehouseId,
+        'f': "json",
+      },
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  int? errno(dynamic response) => castToType<int>(getJsonField(
+        response,
+        r'''$.errno''',
+      ));
+  List<LocationDetailStruct>? data(dynamic response) => (getJsonField(
+        response,
+        r'''$.data''',
+        true,
+      ) as List?)
+          ?.withoutNulls
+          .map((x) => LocationDetailStruct.maybeFromMap(x))
+          .withoutNulls
+          .toList();
 }
 
 /// End StockAPI Group Code

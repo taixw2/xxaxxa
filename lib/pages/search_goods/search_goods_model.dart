@@ -1,11 +1,11 @@
 import '/backend/api_requests/api_calls.dart';
 import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import 'goods_selector_widget.dart' show GoodsSelectorWidget;
+import 'search_goods_widget.dart' show SearchGoodsWidget;
 import 'package:flutter/material.dart';
 
-class GoodsSelectorModel extends FlutterFlowModel<GoodsSelectorWidget> {
-  ///  Local state fields for this component.
+class SearchGoodsModel extends FlutterFlowModel<SearchGoodsWidget> {
+  ///  Local state fields for this page.
 
   List<GoodsDTStruct> goodsList = [];
   void addToGoodsList(GoodsDTStruct item) => goodsList.add(item);
@@ -25,7 +25,7 @@ class GoodsSelectorModel extends FlutterFlowModel<GoodsSelectorWidget> {
   void updateRecentListAtIndex(int index, Function(GoodsDTStruct) updateFn) =>
       recentList[index] = updateFn(recentList[index]);
 
-  ///  State fields for stateful widgets in this component.
+  ///  State fields for stateful widgets in this page.
 
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode;
@@ -35,8 +35,6 @@ class GoodsSelectorModel extends FlutterFlowModel<GoodsSelectorWidget> {
   ApiCallResponse? apiResulttu9;
   // Stores action output result for [Backend Call - API (SearchGoods)] action in IconButton widget.
   ApiCallResponse? apiResulttu9Copy;
-  // Stores action output result for [Backend Call - API (SearchGoods)] action in Container widget.
-  ApiCallResponse? apiResulttu9Copyqqq;
 
   @override
   void initState(BuildContext context) {}
