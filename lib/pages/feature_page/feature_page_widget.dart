@@ -209,7 +209,7 @@ class _FeaturePageWidgetState extends State<FeaturePageWidget> {
                           size: 48.0,
                         ),
                         AutoSizeText(
-                          '清空库位',
+                          '库位调整',
                           minFontSize: 8.0,
                           style:
                               FlutterFlowTheme.of(context).bodyMedium.override(

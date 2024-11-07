@@ -227,50 +227,6 @@ class _FindLocationPageWidgetState extends State<FindLocationPageWidget> {
                                       child: Row(
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
-                                          FlutterFlowIconButton(
-                                            borderRadius: 8.0,
-                                            buttonSize: 40.0,
-                                            fillColor:
-                                                FlutterFlowTheme.of(context)
-                                                    .primary,
-                                            icon: Icon(
-                                              Icons.remove_sharp,
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .info,
-                                              size: 24.0,
-                                            ),
-                                            onPressed: () async {
-                                              _model.returnPositionID =
-                                                  await actions
-                                                      .findPositionIdAction(
-                                                _model.positionList.toList(),
-                                                _model.positionIdList.toList(),
-                                                position,
-                                              );
-                                              await action_blocks.goodsRelation(
-                                                context,
-                                                goodsId:
-                                                    locationDetailListItem.id,
-                                                number: int.parse(
-                                                        valueOrDefault<String>(
-                                                      locationDetailListItem
-                                                          .stockNumber,
-                                                      '1',
-                                                    )) -
-                                                    1,
-                                                positionId:
-                                                    _model.returnPositionID,
-                                              );
-                                              await _model.loadLocationDetail(
-                                                context,
-                                                position: _model.position,
-                                              );
-                                              safeSetState(() {});
-
-                                              safeSetState(() {});
-                                            },
-                                          ),
                                           Expanded(
                                             child: Column(
                                               mainAxisSize: MainAxisSize.max,
@@ -320,9 +276,53 @@ class _FindLocationPageWidgetState extends State<FindLocationPageWidget> {
                                             ),
                                           ),
                                           FlutterFlowIconButton(
+                                            borderRadius: 8.0,
+                                            buttonSize: 30.0,
+                                            fillColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .primary,
+                                            icon: Icon(
+                                              Icons.remove_sharp,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .info,
+                                              size: 12.0,
+                                            ),
+                                            onPressed: () async {
+                                              _model.returnPositionID =
+                                                  await actions
+                                                      .findPositionIdAction(
+                                                _model.positionList.toList(),
+                                                _model.positionIdList.toList(),
+                                                _model.position,
+                                              );
+                                              await action_blocks.goodsRelation(
+                                                context,
+                                                goodsId:
+                                                    locationDetailListItem.id,
+                                                number: int.parse(
+                                                        valueOrDefault<String>(
+                                                      locationDetailListItem
+                                                          .stockNumber,
+                                                      '1',
+                                                    )) -
+                                                    1,
+                                                positionId:
+                                                    _model.returnPositionID,
+                                              );
+                                              await _model.loadLocationDetail(
+                                                context,
+                                                position: _model.position,
+                                              );
+                                              safeSetState(() {});
+
+                                              safeSetState(() {});
+                                            },
+                                          ),
+                                          FlutterFlowIconButton(
                                             borderColor: Colors.transparent,
                                             borderRadius: 8.0,
-                                            buttonSize: 40.0,
+                                            buttonSize: 30.0,
                                             fillColor:
                                                 FlutterFlowTheme.of(context)
                                                     .primary,
@@ -331,7 +331,7 @@ class _FindLocationPageWidgetState extends State<FindLocationPageWidget> {
                                               color:
                                                   FlutterFlowTheme.of(context)
                                                       .info,
-                                              size: 24.0,
+                                              size: 12.0,
                                             ),
                                             onPressed: () async {
                                               _model.returnPlusPositionID =
@@ -339,7 +339,7 @@ class _FindLocationPageWidgetState extends State<FindLocationPageWidget> {
                                                       .findPositionIdAction(
                                                 _model.positionList.toList(),
                                                 _model.positionIdList.toList(),
-                                                position,
+                                                _model.position,
                                               );
                                               await action_blocks.goodsRelation(
                                                 context,

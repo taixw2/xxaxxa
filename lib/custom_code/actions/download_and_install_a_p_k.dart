@@ -10,4 +10,5 @@ import 'package:flutter/material.dart';
 
 Future<bool> downloadAndInstallAPK(String url) async {
   // Add your function code here!
+  return true;
 }
