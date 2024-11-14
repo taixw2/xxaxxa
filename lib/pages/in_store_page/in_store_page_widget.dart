@@ -344,12 +344,17 @@ class _InStorePageWidgetState extends State<InStorePageWidget> {
                                                     .toString(),
                                                 '0',
                                               );
-                                              _model.textController?.selection =
-                                                  TextSelection.collapsed(
-                                                      offset: _model
-                                                          .textController!
-                                                          .text
-                                                          .length);
+                                              _model.textFieldFocusNode
+                                                  ?.requestFocus();
+                                              WidgetsBinding.instance
+                                                  .addPostFrameCallback((_) {
+                                                _model.textController
+                                                        ?.selection =
+                                                    TextSelection.collapsed(
+                                                  offset: _model.textController!
+                                                      .text.length,
+                                                );
+                                              });
                                             });
                                           },
                                         ),
@@ -461,12 +466,17 @@ class _InStorePageWidgetState extends State<InStorePageWidget> {
                                                           )) +
                                                           1)
                                                       .toString());
-                                              _model.textController?.selection =
-                                                  TextSelection.collapsed(
-                                                      offset: _model
-                                                          .textController!
-                                                          .text
-                                                          .length);
+                                              _model.textFieldFocusNode
+                                                  ?.requestFocus();
+                                              WidgetsBinding.instance
+                                                  .addPostFrameCallback((_) {
+                                                _model.textController
+                                                        ?.selection =
+                                                    TextSelection.collapsed(
+                                                  offset: _model.textController!
+                                                      .text.length,
+                                                );
+                                              });
                                             });
                                           },
                                         ),

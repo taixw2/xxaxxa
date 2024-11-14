@@ -25,6 +25,15 @@ class GoodsSelectorModel extends FlutterFlowModel<GoodsSelectorWidget> {
   void updateRecentListAtIndex(int index, Function(GoodsDTStruct) updateFn) =>
       recentList[index] = updateFn(recentList[index]);
 
+  List<String> history = [];
+  void addToHistory(String item) => history.add(item);
+  void removeFromHistory(String item) => history.remove(item);
+  void removeAtIndexFromHistory(int index) => history.removeAt(index);
+  void insertAtIndexInHistory(int index, String item) =>
+      history.insert(index, item);
+  void updateHistoryAtIndex(int index, Function(String) updateFn) =>
+      history[index] = updateFn(history[index]);
+
   ///  State fields for stateful widgets in this component.
 
   // State field(s) for TextField widget.
@@ -35,8 +44,6 @@ class GoodsSelectorModel extends FlutterFlowModel<GoodsSelectorWidget> {
   ApiCallResponse? apiResulttu9;
   // Stores action output result for [Backend Call - API (SearchGoods)] action in IconButton widget.
   ApiCallResponse? apiResulttu9Copy;
-  // Stores action output result for [Backend Call - API (SearchGoods)] action in Container widget.
-  ApiCallResponse? apiResulttu9Copyqqq;
 
   @override
   void initState(BuildContext context) {}

@@ -79,6 +79,10 @@ class _GoodsSelectorWidgetState extends State<GoodsSelectorWidget> {
                       focusNode: _model.textFieldFocusNode,
                       onFieldSubmitted: (_) async {
                         if (_model.textController.text != '') {
+                          _model.removeFromHistory(_model.textController.text);
+                          safeSetState(() {});
+                          _model.addToHistory(_model.textController.text);
+                          safeSetState(() {});
                           _model.apiResulttu9 =
                               await StockAPIGroup.searchGoodsCall.call(
                             keyword: _model.textController.text,
@@ -200,6 +204,10 @@ class _GoodsSelectorWidgetState extends State<GoodsSelectorWidget> {
                   ),
                   onPressed: () async {
                     if (_model.textController.text != '') {
+                      _model.removeFromHistory(_model.textController.text);
+                      safeSetState(() {});
+                      _model.addToHistory(_model.textController.text);
+                      safeSetState(() {});
                       _model.apiResulttu9Copy =
                           await StockAPIGroup.searchGoodsCall.call(
                         keyword: _model.textController.text,
@@ -255,7 +263,7 @@ class _GoodsSelectorWidgetState extends State<GoodsSelectorWidget> {
             ),
             Builder(
               builder: (context) {
-                final recentListData = _model.recentList.toList();
+                final recentListData = _model.history.toList();
 
                 return SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -271,43 +279,16 @@ class _GoodsSelectorWidgetState extends State<GoodsSelectorWidget> {
                         hoverColor: Colors.transparent,
                         highlightColor: Colors.transparent,
                         onTap: () async {
-                          _model.apiResulttu9Copyqqq =
-                              await StockAPIGroup.searchGoodsCall.call(
-                            keyword: recentListDataItem.name,
-                            warehouseId: widget.warehouseId,
-                            token: FFAppState().TOKEN,
-                            session: FFAppState().SESSION,
-                          );
-
-                          if (StockAPIGroup.searchGoodsCall.errno(
-                                (_model.apiResulttu9Copyqqq?.jsonBody ?? ''),
-                              ) ==
-                              1) {
-                            _model.goodsList = StockAPIGroup.searchGoodsCall
-                                .goods(
-                                  (_model.apiResulttu9Copyqqq?.jsonBody ?? ''),
-                                )!
-                                .toList()
-                                .cast<GoodsDTStruct>();
-                            safeSetState(() {});
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  '查询异常',
-                                  style: TextStyle(
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryText,
-                                  ),
-                                ),
-                                duration: const Duration(milliseconds: 4000),
-                                backgroundColor:
-                                    FlutterFlowTheme.of(context).error,
-                              ),
-                            );
-                          }
-
-                          safeSetState(() {});
+                          safeSetState(() {
+                            _model.textController?.text = recentListDataItem;
+                            _model.textFieldFocusNode?.requestFocus();
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              _model.textController?.selection =
+                                  TextSelection.collapsed(
+                                offset: _model.textController!.text.length,
+                              );
+                            });
+                          });
                         },
                         child: Container(
                           constraints: const BoxConstraints(
@@ -321,7 +302,7 @@ class _GoodsSelectorWidgetState extends State<GoodsSelectorWidget> {
                             padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 8.0, 12.0, 8.0),
                             child: Text(
-                              recentListDataItem.name,
+                              recentListDataItem,
                               textAlign: TextAlign.center,
                               maxLines: 8,
                               style: FlutterFlowTheme.of(context)

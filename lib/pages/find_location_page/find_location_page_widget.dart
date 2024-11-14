@@ -15,9 +15,11 @@ class FindLocationPageWidget extends StatefulWidget {
   const FindLocationPageWidget({
     super.key,
     required this.warehouseId,
+    this.positionParam,
   });
 
   final String? warehouseId;
+  final String? positionParam;
 
   @override
   State<FindLocationPageWidget> createState() => _FindLocationPageWidgetState();
@@ -58,6 +60,15 @@ class _FindLocationPageWidgetState extends State<FindLocationPageWidget> {
             .toList()
             .cast<String>();
         safeSetState(() {});
+        if (widget.positionParam != null && widget.positionParam != '') {
+          _model.position = widget.positionParam;
+          safeSetState(() {});
+          await _model.loadLocationDetail(
+            context,
+            position: _model.position,
+          );
+          safeSetState(() {});
+        }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

@@ -63,6 +63,10 @@ class GetWarehouseListCall {
         response,
         r'''$.data[:].name''',
       ));
+  String? sourceId(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$.data[:].source_id''',
+      ));
 }
 
 class GetLocationListCall {
@@ -266,6 +270,85 @@ class GetLocationDetailCall {
 }
 
 /// End StockAPI Group Code
+
+/// Start SaasAPI Group Code
+
+class SaasAPIGroup {
+  static String getBaseUrl({
+    String? token = '88678cac5ffcf32ea81b05f81e0aad6e',
+    String? session = 'or2vm320oojg2ni6cg80u17s56',
+  }) =>
+      'https://saas.maiyatian.com/';
+  static Map<String, String> headers = {
+    'Cookie': 'token=[TOKEN]; PHPSESSID=[SESSION]',
+  };
+  static GetHistoryOrdersCall getHistoryOrdersCall = GetHistoryOrdersCall();
+}
+
+class GetHistoryOrdersCall {
+  Future<ApiCallResponse> call({
+    int? page = 1,
+    String? filterDate = '2024-11-12',
+    String? token = '88678cac5ffcf32ea81b05f81e0aad6e',
+    String? session = 'or2vm320oojg2ni6cg80u17s56',
+  }) async {
+    final baseUrl = SaasAPIGroup.getBaseUrl(
+      token: token,
+      session: session,
+    );
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'GetHistoryOrders',
+      apiUrl: '${baseUrl}query/list/',
+      callType: ApiCallType.GET,
+      headers: {
+        'Cookie': 'token=$token; PHPSESSID=$session',
+      },
+      params: {
+        'page': page,
+        'page_size': "20",
+        'filter_type': "goods_number",
+        'filter_goods_num': "all",
+        'filter_gird': "all",
+        'filter_label': "all",
+        'filter_time': "0",
+        'filter_stime': "60",
+        'filter_date': filterDate,
+        'date_type': "order_date",
+        'shop_id': "0",
+        'mode': "list",
+        'sort_map': "{object Object}",
+        'controller': "open",
+        'sort': "1",
+        'goods_number': "0",
+        'j': "json",
+        'token': token,
+      },
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  List<OrderHistoryDataStruct>? data(dynamic response) => (getJsonField(
+        response,
+        r'''$.data''',
+        true,
+      ) as List?)
+          ?.withoutNulls
+          .map((x) => OrderHistoryDataStruct.maybeFromMap(x))
+          .withoutNulls
+          .toList();
+  int? errno(dynamic response) => castToType<int>(getJsonField(
+        response,
+        r'''$.errno''',
+      ));
+}
+
+/// End SaasAPI Group Code
 
 class CheckLoginedCall {
   static Future<ApiCallResponse> call({

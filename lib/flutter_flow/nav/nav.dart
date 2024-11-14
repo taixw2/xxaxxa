@@ -8,6 +8,7 @@ import '/backend/schema/structs/index.dart';
 import '/auth/custom_auth/custom_auth_user_provider.dart';
 
 import '/index.dart';
+import '/main.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 
@@ -74,13 +75,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       errorBuilder: (context, state) =>
-          appStateNotifier.loggedIn ? const HomePageWidget() : const LoginPageWidget(),
+          appStateNotifier.loggedIn ? const NavBarPage() : const LoginPageWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
           builder: (context, _) =>
-              appStateNotifier.loggedIn ? const HomePageWidget() : const LoginPageWidget(),
+              appStateNotifier.loggedIn ? const NavBarPage() : const LoginPageWidget(),
         ),
         FFRoute(
           name: 'LoginPage',
@@ -100,7 +101,9 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'HomePage',
           path: '/homePage',
-          builder: (context, params) => const HomePageWidget(),
+          builder: (context, params) => params.isEmpty
+              ? const NavBarPage(initialPage: 'HomePage')
+              : const HomePageWidget(),
         ),
         FFRoute(
           name: 'FeaturePage',
@@ -120,6 +123,10 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               'warehouseId',
               ParamType.String,
             ),
+            positionParam: params.getParam(
+              'positionParam',
+              ParamType.String,
+            ),
           ),
         ),
         FFRoute(
@@ -131,6 +138,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               ParamType.String,
             ),
           ),
+        ),
+        FFRoute(
+          name: 'OrderPage',
+          path: '/orderPage',
+          builder: (context, params) => params.isEmpty
+              ? const NavBarPage(initialPage: 'OrderPage')
+              : const OrderPageWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
